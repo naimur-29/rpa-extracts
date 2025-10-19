@@ -1,14 +1,14 @@
 from typing import List, Union
 
+import _barcode
+import _static_values
 import camelot
 import pandas as pd
 from camelot import utils
 
-import _barcode
-import _static_values
-
 # file_name = "./Mim And Manami/US Polo Startex/US POLO 2/PO111084 - 101423 ARJUN.pdf"
 file_name = "./Mim And Manami/US Polo Startex/US Polo-Startex-with Prepack.pdf"
+file_name = "./Mim And Manami/US Polo Startex/US POLO 2/PO111084 - 101423 ARJUN.pdf"
 # -----------------------------
 # Fetch the static values first
 total_page_no, barcode_starting_page_no, contains_ASS, static_values = (

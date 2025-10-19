@@ -3,7 +3,9 @@ import pandas as pd
 from camelot import utils
 
 
-def extract_barcodes_from_page(file_name, table_coords, page_number):
+def extract_barcodes_from_page(
+    file_name, table_coords, page_number, barcode_starting_page_no
+):
     tables = camelot.read_pdf(
         filepath=file_name,
         pages=str(page_number),
@@ -17,15 +19,28 @@ def extract_barcodes_from_page(file_name, table_coords, page_number):
 
         found_barcode = False
         k = 0
-        while not found_barcode:
+        while not found_barcode and k <= len(df):
             try:
-                int(df.iloc[k, 3])
-                found_barcode = True
+                if not page_number == barcode_starting_page_no:
+                    int(df.iloc[k, -1])
+                    found_barcode = True
+                else:
+                    found_barcode = df.iloc[k - 1, -1] == "Barcode"
             except:
                 pass
             k += 1
 
         barcodes_df = df.iloc[k - 1 :, :]
+
+        if page_number == barcode_starting_page_no:
+            new_barcodes_df = pd.DataFrame({})
+            col_count = 0
+            for col in df.columns:
+                if barcodes_df[col].iloc[0] != "" or barcodes_df[col].iloc[1] != "":
+                    new_barcodes_df[col_count] = barcodes_df[col]
+                    col_count += 1
+            barcodes_df = new_barcodes_df
+
         return barcodes_df
     else:
         print("No table found in the specified area.")
@@ -45,7 +60,9 @@ def get_all_barcodes_df(file_name, barcode_starting_page_no, total_pages):
 
     all_barcodes_df = pd.DataFrame({})
     for page_number in range(barcode_starting_page_no, total_pages + 1):
-        barcodes_df = extract_barcodes_from_page(file_name, table_coords, page_number)
+        barcodes_df = extract_barcodes_from_page(
+            file_name, table_coords, page_number, barcode_starting_page_no
+        )
         all_barcodes_df = pd.concat([all_barcodes_df, barcodes_df], ignore_index=True)
 
     return all_barcodes_df

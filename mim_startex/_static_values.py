@@ -53,9 +53,17 @@ def get_static_values(file_name, target_page_no):
                 ship_to_address = _pdfplumber_func.get_value_between_keyphrases(
                     page, "Ship-to Address", "Colour Code"
                 )
+                ship_to_address = (
+                    ship_to_address.replace("\n", ", ")
+                    if ship_to_address is not None
+                    else ship_to_address
+                )
             if total_qty is None:
                 total_qty = _pdfplumber_func.get_value_after_keyphrase(
                     page, "Total Qty."
+                )
+                total_qty = (
+                    total_qty.split("\n")[0] if total_qty is not None else total_qty
                 )
         static_values["Ship-to Address"] = (
             ship_to_address if ship_to_address is not None else ""
