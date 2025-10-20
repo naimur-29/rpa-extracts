@@ -1,11 +1,16 @@
+from typing import Any, List, Optional, Tuple
+
 import camelot
 import pandas as pd
 from camelot import utils
 
 
 def extract_barcodes_from_page(
-    file_name, table_coords, page_number, barcode_starting_page_no
-):
+    file_name: str,
+    table_coords: List[str],
+    page_number: int,
+    barcode_starting_page_no: int,
+) -> pd.DataFrame:
     tables = camelot.read_pdf(
         filepath=file_name,
         pages=str(page_number),
@@ -15,7 +20,6 @@ def extract_barcodes_from_page(
 
     if tables.n > 0:
         df = tables[-1].df
-        # print(df)
 
         found_barcode = False
         k = 0
@@ -47,7 +51,12 @@ def extract_barcodes_from_page(
     return pd.DataFrame({})
 
 
-def get_all_barcodes_df(file_name, barcode_starting_page_no, total_pages):
+def get_all_barcodes_df(
+    file_name: str, barcode_starting_page_no: int, total_pages: int
+) -> pd.DataFrame:
+    print("Fetching all the barcodes...")
+    print("============================")
+
     _layout, dim = utils.get_page_layout(file_name)
 
     # The dimensions are stored in the `dim` variable as a tuple: (width, height)
@@ -68,7 +77,7 @@ def get_all_barcodes_df(file_name, barcode_starting_page_no, total_pages):
     return all_barcodes_df
 
 
-def get_barcode(df, color_code, size):
+def get_barcode(df: pd.DataFrame, color_code: str, size: str) -> Optional[str]:
     try:
         # 1. Define your conditions
         condition_A = df.iloc[:, -3] == color_code

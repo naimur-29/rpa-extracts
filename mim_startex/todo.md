@@ -45,7 +45,7 @@
   - Having problem extracting the Total Qty. ✅
   
 # Todo - 20th of Sept. 2025
-  - Clean code.
-  - Show extraction process in a friendly manner.
-  - Handle multiple files (folder input) 
-  - Generate Output
+  - Clean code. ✅
+  - Show extraction process in a friendly manner. ✅
+  - Handle multiple files (folder input) ✅
+  - Generate Output ✅
