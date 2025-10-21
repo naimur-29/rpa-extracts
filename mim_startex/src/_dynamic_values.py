@@ -68,7 +68,7 @@ def extract_one_item(
             col=color_name_index,
         )
         color_code = get_value(item, "Color Code", preferred_column_list)
-        color_description = color_code + color_name
+        color_description = f"{color_code} {color_name}"
         # Handle Exception for color name 'Greymelange'
         if color_name == "Greymelange":
             color_description = color_name
