@@ -28,7 +28,7 @@ def df_find_first_pattern_index(df, pattern=None):
     # 1. Stack the DataFrame to get a Series with a MultiIndex (row_label, col_label)
     #    This puts all values into a single column for easy searching.
     stacked_series = df.stack(
-        dropna=False, future_stack=True
+        future_stack=True
     )  # Keep NaNs, though str methods handle them
 
     # 2. Use str.contains() with the regex pattern
